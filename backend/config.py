@@ -21,7 +21,7 @@ class Settings(BaseSettings):
     PIPELINE_SECRET_KEY: str = "dev-secret-change-me"
 
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=(".env", "../.env"),
         env_file_encoding="utf-8",
         extra="ignore"
     )
