@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from config import settings
 from routers.discovery import router as discovery_router
 from routers.research import router as research_router
+from routers.short_news import router as short_news_router
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -22,6 +23,7 @@ app.add_middleware(
 # Register API routers
 app.include_router(discovery_router)
 app.include_router(research_router)
+app.include_router(short_news_router)
 
 
 @app.get("/")
