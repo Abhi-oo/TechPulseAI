@@ -4,6 +4,7 @@ from config import settings
 from routers.discovery import router as discovery_router
 from routers.research import router as research_router
 from routers.short_news import router as short_news_router
+from routers.stories import router as stories_router
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -24,6 +25,7 @@ app.add_middleware(
 app.include_router(discovery_router)
 app.include_router(research_router)
 app.include_router(short_news_router)
+app.include_router(stories_router)
 
 
 @app.get("/")
