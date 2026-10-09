@@ -1,8 +1,26 @@
 @import "tailwindcss";
 
+/* Enable class-based dark mode in Tailwind CSS v4 */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card-bg: #ffffff;
+  --card-border: #e2e8f0;
+  --accent-cyan: #0284c7;
+  --accent-emerald: #059669;
+  --accent-amber: #d97706;
+}
+
+.dark {
+  --background: #070b12;
+  --foreground: #f1f5f9;
+  --card-bg: #0d1527;
+  --card-border: #1e293b;
+  --accent-cyan: #38bdf8;
+  --accent-emerald: #34d399;
+  --accent-amber: #fbbf24;
 }
 
 @theme inline {
@@ -12,15 +30,89 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* Futuristic ambient grid background */
+.ai-grid-background {
+  background-image: radial-gradient(rgba(14, 165, 233, 0.08) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.dark .ai-grid-background {
+  background-image: radial-gradient(rgba(56, 189, 248, 0.07) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+/* Sidebar channel bump micro-animation */
+.channel-btn {
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.18s ease,
+              border-color 0.18s ease,
+              box-shadow 0.18s ease;
+  will-change: transform;
+}
+
+.channel-btn:hover {
+  transform: translateX(4px);
+}
+
+.channel-btn:focus-visible {
+  transform: translateX(4px);
+  outline: 2px solid #06b6d4;
+  outline-offset: 2px;
+}
+
+.channel-btn:active {
+  transform: translateX(2px) scale(0.99);
+}
+
+/* Subtle live beacon pulse */
+@keyframes beacon-glow {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.08);
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.live-beacon-pulse {
+  animation: beacon-glow 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Card hover lift effect */
+.ai-story-card {
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.2s ease,
+              border-color 0.2s ease;
+  will-change: transform;
+}
+
+.ai-story-card:hover {
+  transform: translateY(-2px);
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .channel-btn,
+  .channel-btn:hover,
+  .channel-btn:focus-visible,
+  .channel-btn:active,
+  .ai-story-card,
+  .ai-story-card:hover {
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .live-beacon-pulse {
+    animation: none !important;
+  }
 }

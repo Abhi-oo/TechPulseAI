@@ -12,13 +12,13 @@ interface SidebarProps {
 }
 
 const CATEGORIES = [
-  { label: "For You", value: "all", backendKey: null },
-  { label: "AI & GenAI", value: "LLMs & GenAI", backendKey: "LLMs & GenAI" },
-  { label: "Hardware", value: "Hardware & Silicon", backendKey: "Hardware & Silicon" },
-  { label: "Open Source", value: "OpenSource & Frameworks", backendKey: "OpenSource & Frameworks" },
-  { label: "Cybersecurity", value: "AI Safety & Security", backendKey: "AI Safety & Security" },
-  { label: "Robotics", value: "Robotics & Autonomous", backendKey: "Robotics & Autonomous" },
-  { label: "Cloud", value: "Cloud & Infrastructure", backendKey: "Cloud & Infrastructure" },
+  { label: "For You", value: "all", backendKey: null, icon: "🌐" },
+  { label: "AI & GenAI", value: "LLMs & GenAI", backendKey: "LLMs & GenAI", icon: "🧠" },
+  { label: "Hardware", value: "Hardware & Silicon", backendKey: "Hardware & Silicon", icon: "⚡" },
+  { label: "Open Source", value: "OpenSource & Frameworks", backendKey: "OpenSource & Frameworks", icon: "📦" },
+  { label: "Cybersecurity", value: "AI Safety & Security", backendKey: "AI Safety & Security", icon: "🛡️" },
+  { label: "Robotics", value: "Robotics & Autonomous", backendKey: "Robotics & Autonomous", icon: "🤖" },
+  { label: "Cloud", value: "Cloud & Infrastructure", backendKey: "Cloud & Infrastructure", icon: "☁️" },
 ];
 
 export default function Sidebar({
@@ -29,36 +29,50 @@ export default function Sidebar({
   stats,
 }: SidebarProps) {
   return (
-    <aside className="w-full shrink-0 md:w-60">
+    <aside className="w-full shrink-0 md:w-64 space-y-4">
       {/* Category Navigation */}
-      <div className="rounded-xl border border-slate-800/80 bg-slate-900/60 p-3 shadow-sm backdrop-blur">
-        <h2 className="px-2 pb-2 text-[11px] font-mono font-semibold uppercase tracking-wider text-slate-400">
-          Intelligence Channels
-        </h2>
+      <div className="rounded-xl border border-slate-200/80 bg-white p-3.5 shadow-sm dark:border-slate-800/80 dark:bg-slate-900/60 dark:shadow-none backdrop-blur transition-colors duration-200">
+        <div className="flex items-center justify-between px-2 pb-2.5">
+          <h2 className="text-[11px] font-mono font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+            Live Channels
+          </h2>
+          <span className="flex items-center gap-1 text-[10px] font-mono text-emerald-600 dark:text-emerald-400">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 live-beacon-pulse" />
+            REALTIME
+          </span>
+        </div>
+
         <nav className="flex flex-wrap gap-1 md:flex-col">
           {CATEGORIES.map((cat) => {
             const isSelected = selectedCategory === cat.value;
-            const count = cat.backendKey && stats?.categories
-              ? stats.categories[cat.backendKey] || 0
-              : null;
+            const count =
+              cat.backendKey && stats?.categories
+                ? stats.categories[cat.backendKey] || 0
+                : null;
 
             return (
               <button
                 key={cat.value}
                 onClick={() => onSelectCategory(cat.value)}
-                className={`flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium transition-all ${
+                className={`channel-btn group flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium text-left ${
                   isSelected
-                    ? "bg-cyan-500/15 text-cyan-300 font-semibold border border-cyan-500/30 shadow-sm"
-                    : "text-slate-300 hover:bg-slate-800/60 hover:text-white"
+                    ? "bg-cyan-50 border border-cyan-400/50 text-cyan-800 shadow-sm dark:bg-cyan-950/40 dark:border-cyan-500/40 dark:text-cyan-300 font-semibold"
+                    : "text-slate-700 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800/60 dark:hover:text-white border border-transparent"
                 }`}
               >
-                <span>{cat.label}</span>
+                <div className="flex items-center gap-2.5 truncate">
+                  <span className="text-sm transition-transform duration-150 group-hover:scale-110">
+                    {cat.icon}
+                  </span>
+                  <span className="truncate">{cat.label}</span>
+                </div>
+
                 {count !== null && count > 0 && (
                   <span
-                    className={`ml-2 rounded-full px-1.5 py-0.2 text-[10px] font-mono ${
+                    className={`ml-2 shrink-0 rounded-full px-2 py-0.5 text-[10px] font-mono transition-colors ${
                       isSelected
-                        ? "bg-cyan-400/20 text-cyan-200"
-                        : "bg-slate-800 text-slate-400"
+                        ? "bg-cyan-200 text-cyan-900 dark:bg-cyan-400/20 dark:text-cyan-200 font-bold"
+                        : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400 group-hover:bg-slate-200 dark:group-hover:bg-slate-700"
                     }`}
                   >
                     {count}
@@ -70,38 +84,38 @@ export default function Sidebar({
         </nav>
       </div>
 
-      {/* Sort By Selector */}
-      <div className="mt-3 rounded-xl border border-slate-800/80 bg-slate-900/60 p-3 shadow-sm backdrop-blur">
-        <h2 className="px-2 pb-2 text-[11px] font-mono font-semibold uppercase tracking-wider text-slate-400">
+      {/* Stream Ordering Selector */}
+      <div className="rounded-xl border border-slate-200/80 bg-white p-3.5 shadow-sm dark:border-slate-800/80 dark:bg-slate-900/60 dark:shadow-none backdrop-blur transition-colors duration-200">
+        <h2 className="px-2 pb-2 text-[11px] font-mono font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
           Stream Ordering
         </h2>
         <div className="grid grid-cols-3 gap-1 md:grid-cols-1">
           <button
             onClick={() => onSortChange("rank")}
-            className={`rounded-lg px-2.5 py-1.5 text-xs font-medium text-left transition-all ${
+            className={`channel-btn rounded-lg px-2.5 py-1.5 text-xs font-medium text-left ${
               sortBy === "rank"
-                ? "bg-slate-800 text-cyan-300 font-semibold border border-slate-700"
-                : "text-slate-400 hover:text-slate-200"
+                ? "bg-slate-100 border border-slate-300 text-cyan-700 font-semibold dark:bg-slate-800 dark:border-slate-700 dark:text-cyan-300"
+                : "text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-850 border border-transparent"
             }`}
           >
             ⚡ Top Gravity Rank
           </button>
           <button
             onClick={() => onSortChange("recent")}
-            className={`rounded-lg px-2.5 py-1.5 text-xs font-medium text-left transition-all ${
+            className={`channel-btn rounded-lg px-2.5 py-1.5 text-xs font-medium text-left ${
               sortBy === "recent"
-                ? "bg-slate-800 text-cyan-300 font-semibold border border-slate-700"
-                : "text-slate-400 hover:text-slate-200"
+                ? "bg-slate-100 border border-slate-300 text-cyan-700 font-semibold dark:bg-slate-800 dark:border-slate-700 dark:text-cyan-300"
+                : "text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-850 border border-transparent"
             }`}
           >
             🕒 Most Recent
           </button>
           <button
             onClick={() => onSortChange("confidence")}
-            className={`rounded-lg px-2.5 py-1.5 text-xs font-medium text-left transition-all ${
+            className={`channel-btn rounded-lg px-2.5 py-1.5 text-xs font-medium text-left ${
               sortBy === "confidence"
-                ? "bg-slate-800 text-cyan-300 font-semibold border border-slate-700"
-                : "text-slate-400 hover:text-slate-200"
+                ? "bg-slate-100 border border-slate-300 text-cyan-700 font-semibold dark:bg-slate-800 dark:border-slate-700 dark:text-cyan-300"
+                : "text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-850 border border-transparent"
             }`}
           >
             🛡️ Highest Confidence
@@ -111,18 +125,24 @@ export default function Sidebar({
 
       {/* Telemetry Footer Card */}
       {stats && (
-        <div className="mt-3 rounded-xl border border-slate-800/60 bg-gradient-to-b from-slate-900/40 to-slate-950/60 p-3 text-[11px] text-slate-400">
-          <div className="flex items-center justify-between pb-1 font-mono">
+        <div className="rounded-xl border border-slate-200/80 bg-gradient-to-b from-slate-50 to-slate-100 p-3.5 text-[11px] text-slate-600 dark:border-slate-800/60 dark:from-slate-900/40 dark:to-slate-950/60 dark:text-slate-400 shadow-sm dark:shadow-none transition-colors duration-200">
+          <div className="flex items-center justify-between pb-1.5 font-mono">
             <span>Verified Stories</span>
-            <span className="text-emerald-400 font-semibold">{stats.verified_stories}</span>
+            <span className="text-emerald-600 dark:text-emerald-400 font-bold">
+              {stats.verified_stories}
+            </span>
           </div>
-          <div className="flex items-center justify-between pb-1 font-mono">
+          <div className="flex items-center justify-between pb-1.5 font-mono">
             <span>Active Sources</span>
-            <span className="text-slate-200 font-semibold">{stats.total_sources}</span>
+            <span className="text-slate-800 dark:text-slate-200 font-bold">
+              {stats.total_sources}
+            </span>
           </div>
           <div className="flex items-center justify-between font-mono">
             <span>Verified Claims</span>
-            <span className="text-cyan-400 font-semibold">{stats.total_claims}</span>
+            <span className="text-cyan-600 dark:text-cyan-400 font-bold">
+              {stats.total_claims}
+            </span>
           </div>
         </div>
       )}

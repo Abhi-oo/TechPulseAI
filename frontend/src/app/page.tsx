@@ -94,7 +94,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
+    <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-[#070b12] dark:text-slate-100 ai-grid-background flex flex-col font-sans transition-colors duration-200">
       {/* Top Navbar */}
       <Navbar
         stats={stats}
@@ -114,7 +114,7 @@ export default function Home() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search intelligence stories, models, chips..."
-            className="w-full rounded-lg border border-slate-800 bg-slate-900/80 px-3.5 py-2 text-xs text-slate-200 placeholder-slate-500 focus:border-cyan-500/50 focus:outline-none"
+            className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-xs text-slate-900 placeholder-slate-400 focus:border-cyan-500 focus:outline-none dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-200 dark:placeholder-slate-500"
           />
         </div>
 
@@ -132,12 +132,12 @@ export default function Home() {
           {/* Center Feed Stream */}
           <section className="flex-1 min-w-0">
             {/* Stream Header */}
-            <div className="mb-4 flex flex-wrap items-center justify-between gap-2 border-b border-slate-800/80 pb-3">
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-3 dark:border-slate-800/80">
               <div>
-                <h1 className="text-sm font-mono font-bold uppercase tracking-wider text-white">
+                <h1 className="text-sm font-mono font-bold uppercase tracking-wider text-slate-900 dark:text-white">
                   {selectedCategory === "all" ? "For You Stream" : selectedCategory}
                 </h1>
-                <p className="text-[11px] text-slate-400">
+                <p className="text-[11px] text-slate-500 dark:text-slate-400">
                   {loading
                     ? "Updating live stream..."
                     : `Showing ${stories.length} canonical stories (${total} total in channel)`}
@@ -146,8 +146,8 @@ export default function Home() {
 
               {/* Sorting Pills for Mobile/Tablet */}
               <div className="flex items-center gap-1.5 text-xs font-mono">
-                <span className="text-[10px] text-slate-500 uppercase">Sort:</span>
-                <span className="rounded bg-slate-800/80 px-2 py-0.5 text-cyan-300 font-semibold text-[11px]">
+                <span className="text-[10px] text-slate-400 dark:text-slate-500 uppercase">Sort:</span>
+                <span className="rounded bg-slate-200 px-2 py-0.5 text-cyan-800 font-semibold text-[11px] dark:bg-slate-800/80 dark:text-cyan-300">
                   {sortBy === "rank" ? "Gravity Rank" : sortBy === "recent" ? "Most Recent" : "Confidence"}
                 </span>
               </div>
@@ -186,12 +186,12 @@ export default function Home() {
       />
 
       {/* Footer */}
-      <footer className="mt-12 border-t border-slate-900 bg-slate-950/80 py-6 text-center text-xs text-slate-500 font-mono">
+      <footer className="mt-12 border-t border-slate-200 bg-white/70 py-6 text-center text-xs text-slate-500 font-mono dark:border-slate-900 dark:bg-slate-950/80 dark:text-slate-500 transition-colors duration-200">
         <div className="mx-auto max-w-7xl px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div>
             TechPulse AI © 2026 • Autonomous Intelligence Network
           </div>
-          <div className="flex items-center gap-4 text-slate-400">
+          <div className="flex items-center gap-4 text-slate-500 dark:text-slate-400">
             <span>FastAPI Backend Active</span>
             <span>•</span>
             <span>Supabase Verified</span>
