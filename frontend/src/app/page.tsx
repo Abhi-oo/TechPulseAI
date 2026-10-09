@@ -1,69 +1,205 @@
-import Image from "next/image";
+"use client";
+
+import React, { useEffect, useState, useCallback } from "react";
+import { Story, PlatformStats } from "@/types/api";
+import { fetchStories, fetchPlatformStats, triggerLiveScan } from "@/lib/api";
+import Navbar from "@/components/Navbar";
+import Sidebar from "@/components/Sidebar";
+import StoryCard from "@/components/StoryCard";
+import StoryDetailModal from "@/components/StoryDetailModal";
+import SkeletonFeed from "@/components/SkeletonFeed";
+import EmptyState from "@/components/EmptyState";
+import ErrorState from "@/components/ErrorState";
 
 export default function Home() {
+  const [stories, setStories] = useState<Story[]>([]);
+  const [total, setTotal] = useState<number>(0);
+  const [stats, setStats] = useState<PlatformStats | null>(null);
+
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [sortBy, setSortBy] = useState<"rank" | "recent" | "confidence">("rank");
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const [selectedStory, setSelectedStory] = useState<Story | null>(null);
+  const [isScanning, setIsScanning] = useState<boolean>(false);
+  const [scanResult, setScanResult] = useState<{
+    scanned: number;
+    newArticles: number;
+    researched: number;
+  } | null>(null);
+
+  // Load feed stories
+  const loadFeed = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await fetchStories({
+        category: selectedCategory,
+        sortBy,
+        search: searchQuery,
+        limit: 30,
+      });
+      setStories(data.stories || []);
+      setTotal(data.total || 0);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to load intelligence feed";
+      setError(msg);
+    } finally {
+      setLoading(false);
+    }
+  }, [selectedCategory, sortBy, searchQuery]);
+
+  // Load platform stats
+  const loadStats = useCallback(async () => {
+    try {
+      const st = await fetchPlatformStats();
+      setStats(st);
+    } catch {
+      // Stats failure is non-fatal for feed
+    }
+  }, []);
+
+  useEffect(() => {
+    loadFeed();
+  }, [loadFeed]);
+
+  useEffect(() => {
+    loadStats();
+  }, [loadStats]);
+
+  // Handle triggering a live scan
+  const handleRunScan = async () => {
+    if (isScanning) return;
+    setIsScanning(true);
+    setScanResult(null);
+    try {
+      const res = await triggerLiveScan();
+      setScanResult(res);
+      // Reload feed and stats with real updated data
+      await Promise.all([loadFeed(), loadStats()]);
+    } catch (err: unknown) {
+      alert(err instanceof Error ? err.message : "Failed to execute scan");
+    } finally {
+      setIsScanning(false);
+    }
+  };
+
+  const handleResetFilters = () => {
+    setSelectedCategory("all");
+    setSearchQuery("");
+    setSortBy("rank");
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
+      {/* Top Navbar */}
+      <Navbar
+        stats={stats}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
+        onRunScan={handleRunScan}
+        isScanning={isScanning}
+        scanResult={scanResult}
+      />
+
+      {/* Main Container */}
+      <main className="mx-auto flex-1 w-full max-w-7xl px-4 py-6 sm:px-6">
+        {/* Mobile Search Bar */}
+        <div className="mb-4 block md:hidden">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search intelligence stories, models, chips..."
+            className="w-full rounded-lg border border-slate-800 bg-slate-900/80 px-3.5 py-2 text-xs text-slate-200 placeholder-slate-500 focus:border-cyan-500/50 focus:outline-none"
+          />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        {/* Content Columns */}
+        <div className="flex flex-col gap-6 md:flex-row">
+          {/* Left Navigation Sidebar */}
+          <Sidebar
+            selectedCategory={selectedCategory}
+            onSelectCategory={setSelectedCategory}
+            sortBy={sortBy}
+            onSortChange={setSortBy}
+            stats={stats}
+          />
+
+          {/* Center Feed Stream */}
+          <section className="flex-1 min-w-0">
+            {/* Stream Header */}
+            <div className="mb-4 flex flex-wrap items-center justify-between gap-2 border-b border-slate-800/80 pb-3">
+              <div>
+                <h1 className="text-sm font-mono font-bold uppercase tracking-wider text-white">
+                  {selectedCategory === "all" ? "For You Stream" : selectedCategory}
+                </h1>
+                <p className="text-[11px] text-slate-400">
+                  {loading
+                    ? "Updating live stream..."
+                    : `Showing ${stories.length} canonical stories (${total} total in channel)`}
+                </p>
+              </div>
+
+              {/* Sorting Pills for Mobile/Tablet */}
+              <div className="flex items-center gap-1.5 text-xs font-mono">
+                <span className="text-[10px] text-slate-500 uppercase">Sort:</span>
+                <span className="rounded bg-slate-800/80 px-2 py-0.5 text-cyan-300 font-semibold text-[11px]">
+                  {sortBy === "rank" ? "Gravity Rank" : sortBy === "recent" ? "Most Recent" : "Confidence"}
+                </span>
+              </div>
+            </div>
+
+            {/* Feed States */}
+            {loading ? (
+              <SkeletonFeed />
+            ) : error ? (
+              <ErrorState message={error} onRetry={loadFeed} />
+            ) : stories.length === 0 ? (
+              <EmptyState
+                category={selectedCategory}
+                searchQuery={searchQuery}
+                onReset={handleResetFilters}
+              />
+            ) : (
+              <div className="space-y-4">
+                {stories.map((story) => (
+                  <StoryCard
+                    key={story.id}
+                    story={story}
+                    onInspect={setSelectedStory}
+                  />
+                ))}
+              </div>
+            )}
+          </section>
         </div>
       </main>
+
+      {/* Story Detail Dossier Modal */}
+      <StoryDetailModal
+        story={selectedStory}
+        onClose={() => setSelectedStory(null)}
+      />
+
+      {/* Footer */}
+      <footer className="mt-12 border-t border-slate-900 bg-slate-950/80 py-6 text-center text-xs text-slate-500 font-mono">
+        <div className="mx-auto max-w-7xl px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div>
+            TechPulse AI © 2026 • Autonomous Intelligence Network
+          </div>
+          <div className="flex items-center gap-4 text-slate-400">
+            <span>FastAPI Backend Active</span>
+            <span>•</span>
+            <span>Supabase Verified</span>
+            <span>•</span>
+            <span>Deterministic Scoring</span>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
