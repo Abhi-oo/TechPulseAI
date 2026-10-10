@@ -29,7 +29,7 @@ export default function Sidebar({
   stats,
 }: SidebarProps) {
   return (
-    <aside className="animate-entrance-sidebar relative w-full shrink-0 md:w-64 space-y-4 md:sticky md:top-[88px] z-10">
+    <aside className="animate-entrance-sidebar relative w-full shrink-0 md:w-64 lg:w-72 md:h-full md:overflow-y-auto custom-scrollbar md:py-6 md:pr-4 md:border-r border-slate-200/80 dark:border-slate-800/80 space-y-4 z-10">
       {/* Persistent Left-Side Floating Decorative Particles */}
       <div
         aria-hidden="true"
