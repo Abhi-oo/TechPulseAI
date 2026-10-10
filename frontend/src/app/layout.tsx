@@ -53,7 +53,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-full flex flex-col overflow-x-hidden bg-slate-50 text-slate-900 dark:bg-[#070b12] dark:text-slate-100 font-sans transition-colors duration-200 selection:bg-cyan-500/25 selection:text-cyan-800 dark:selection:text-cyan-200">
+      <body className="min-h-full flex flex-col overflow-x-clip bg-slate-50 text-slate-900 dark:bg-[#070b12] dark:text-slate-100 font-sans transition-colors duration-200 selection:bg-cyan-500/25 selection:text-cyan-800 dark:selection:text-cyan-200">
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>

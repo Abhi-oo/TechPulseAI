@@ -29,11 +29,11 @@ export default function Sidebar({
   stats,
 }: SidebarProps) {
   return (
-    <aside className="animate-entrance-sidebar relative w-full shrink-0 md:w-64 space-y-4 md:sticky md:top-20 z-10">
+    <aside className="animate-entrance-sidebar relative w-full shrink-0 md:w-64 space-y-4 md:sticky md:top-[88px] z-10">
       {/* Persistent Left-Side Floating Decorative Particles */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -inset-3 -z-10 overflow-hidden rounded-2xl"
+        className="pointer-events-none absolute inset-0 -z-10 overflow-hidden rounded-2xl"
       >
         <div className="sidebar-particle sidebar-particle-1" />
         <div className="sidebar-particle sidebar-particle-2" />

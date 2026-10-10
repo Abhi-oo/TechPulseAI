@@ -24,8 +24,8 @@ export default function Navbar({
   const { theme, toggleTheme } = useTheme();
 
   return (
-    <header className="animate-entrance-header sticky top-0 z-30 border-b border-slate-200/80 bg-white/85 backdrop-blur-md dark:border-slate-800/80 dark:bg-slate-950/85 transition-colors duration-200">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
+    <header className="animate-entrance-header sticky top-0 z-30 h-16 border-b border-slate-200/80 bg-white/85 backdrop-blur-md dark:border-slate-800/80 dark:bg-slate-950/85 transition-colors duration-200">
+      <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-4 sm:px-6">
         {/* Brand & Live Beacon */}
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2.5">

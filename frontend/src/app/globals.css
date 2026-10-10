@@ -68,19 +68,13 @@ body {
   }
 }
 
-/* 3. Left sidebar entrance: staggered upward bump */
+/* 3. Left sidebar entrance: smooth staggered fade-in within dashboard */
 @keyframes entrance-sidebar {
   0% {
     opacity: 0;
-    transform: translateY(24px);
-  }
-  75% {
-    opacity: 0.96;
-    transform: translateY(-1.5px);
   }
   100% {
     opacity: 1;
-    transform: none;
   }
 }
 
