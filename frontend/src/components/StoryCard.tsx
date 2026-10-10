@@ -6,6 +6,7 @@ import { Story } from "@/types/api";
 interface StoryCardProps {
   story: Story;
   onInspect: (story: Story) => void;
+  staggerClass?: string;
 }
 
 function formatRelativeTime(isoString: string): string {
@@ -26,7 +27,7 @@ function formatRelativeTime(isoString: string): string {
   }
 }
 
-export default function StoryCard({ story, onInspect }: StoryCardProps) {
+export default function StoryCard({ story, onInspect, staggerClass }: StoryCardProps) {
   // Confidence badge color mapping
   const confidenceColor =
     story.confidence >= 75
@@ -36,7 +37,7 @@ export default function StoryCard({ story, onInspect }: StoryCardProps) {
       : "border-amber-500/30 bg-amber-50 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400";
 
   return (
-    <article className="ai-story-card group relative rounded-xl border border-slate-200/90 bg-white p-5 shadow-sm transition-all hover:border-cyan-500/40 hover:shadow-md hover:shadow-cyan-500/5 dark:border-slate-800 dark:bg-slate-900/70 dark:hover:border-slate-700 dark:hover:bg-slate-900/90">
+    <article className={`ai-story-card animate-entrance-card ${staggerClass || ""} group relative rounded-xl border border-slate-200/90 bg-white p-5 shadow-sm transition-all hover:border-cyan-500/40 hover:shadow-md hover:shadow-cyan-500/5 dark:border-slate-800 dark:bg-slate-900/70 dark:hover:border-slate-700 dark:hover:bg-slate-900/90`}>
       {/* Top Meta Bar */}
       <div className="flex flex-wrap items-center justify-between gap-2 pb-3 text-xs">
         <div className="flex items-center gap-2">

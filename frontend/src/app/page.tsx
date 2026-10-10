@@ -106,7 +106,7 @@ export default function Home() {
       />
 
       {/* Main Container */}
-      <main className="mx-auto flex-1 w-full max-w-7xl px-4 py-6 sm:px-6">
+      <main className="animate-entrance-dashboard mx-auto flex-1 w-full max-w-7xl px-4 py-6 sm:px-6">
         {/* Mobile Search Bar */}
         <div className="mb-4 block md:hidden">
           <input
@@ -130,7 +130,7 @@ export default function Home() {
           />
 
           {/* Center Feed Stream */}
-          <section className="flex-1 min-w-0">
+          <section className="animate-entrance-feed flex-1 min-w-0">
             {/* Stream Header */}
             <div className="mb-4 flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-3 dark:border-slate-800/80">
               <div>
@@ -166,11 +166,12 @@ export default function Home() {
               />
             ) : (
               <div className="space-y-4">
-                {stories.map((story) => (
+                {stories.map((story, idx) => (
                   <StoryCard
                     key={story.id}
                     story={story}
                     onInspect={setSelectedStory}
+                    staggerClass={idx < 5 ? `stagger-${idx + 1}` : undefined}
                   />
                 ))}
               </div>

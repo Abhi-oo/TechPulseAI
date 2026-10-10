@@ -29,7 +29,7 @@ export default function Sidebar({
   stats,
 }: SidebarProps) {
   return (
-    <aside className="w-full shrink-0 md:w-64 space-y-4">
+    <aside className="animate-entrance-sidebar w-full shrink-0 md:w-64 space-y-4">
       {/* Category Navigation */}
       <div className="rounded-xl border border-slate-200/80 bg-white p-3.5 shadow-sm dark:border-slate-800/80 dark:bg-slate-900/60 dark:shadow-none backdrop-blur transition-colors duration-200">
         <div className="flex items-center justify-between px-2 pb-2.5">

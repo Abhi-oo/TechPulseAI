@@ -36,6 +36,113 @@ body {
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 
+/* ==========================================================================
+   Classic Website Entrance Animation
+   ========================================================================== */
+
+/* 1. Header entrance: subtle fade & slide down */
+@keyframes entrance-header {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 2. Main dashboard container entrance: gentle upward bump with subtle settling */
+@keyframes entrance-dashboard {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  75% {
+    opacity: 0.96;
+    transform: translateY(-2px); /* subtle, refined upward settling bump */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 3. Left sidebar entrance: staggered upward bump */
+@keyframes entrance-sidebar {
+  0% {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  75% {
+    opacity: 0.96;
+    transform: translateY(-1.5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 4. Center feed stream entrance: staggered upward bump */
+@keyframes entrance-feed {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  75% {
+    opacity: 0.96;
+    transform: translateY(-2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 5. Story cards entrance: subtle upward movement and fade */
+@keyframes entrance-card {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-entrance-header {
+  animation: entrance-header 550ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: transform, opacity;
+}
+
+.animate-entrance-dashboard {
+  animation: entrance-dashboard 750ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: transform, opacity;
+}
+
+.animate-entrance-sidebar {
+  animation: entrance-sidebar 700ms cubic-bezier(0.16, 1, 0.3, 1) 100ms both;
+  will-change: transform, opacity;
+}
+
+.animate-entrance-feed {
+  animation: entrance-feed 750ms cubic-bezier(0.16, 1, 0.3, 1) 200ms both;
+  will-change: transform, opacity;
+}
+
+.animate-entrance-card {
+  animation: entrance-card 450ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  will-change: transform, opacity;
+}
+
+/* Stagger delays for initial cards */
+.stagger-1 { animation-delay: 240ms; }
+.stagger-2 { animation-delay: 300ms; }
+.stagger-3 { animation-delay: 360ms; }
+.stagger-4 { animation-delay: 420ms; }
+.stagger-5 { animation-delay: 480ms; }
 
 /* Sidebar channel bump micro-animation */
 .channel-btn {
@@ -92,6 +199,11 @@ body {
 
 /* Respect user's motion preferences */
 @media (prefers-reduced-motion: reduce) {
+  .animate-entrance-header,
+  .animate-entrance-dashboard,
+  .animate-entrance-sidebar,
+  .animate-entrance-feed,
+  .animate-entrance-card,
   .channel-btn,
   .channel-btn:hover,
   .channel-btn:focus-visible,
@@ -100,6 +212,8 @@ body {
   .ai-story-card:hover {
     transform: none !important;
     transition: none !important;
+    animation: none !important;
+    opacity: 1 !important;
   }
 
   .live-beacon-pulse {
