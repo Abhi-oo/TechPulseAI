@@ -48,7 +48,7 @@ body {
   }
   100% {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
   }
 }
 
@@ -60,11 +60,11 @@ body {
   }
   75% {
     opacity: 0.96;
-    transform: translateY(-2px); /* subtle, refined upward settling bump */
+    transform: translateY(-2px);
   }
   100% {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
   }
 }
 
@@ -80,7 +80,7 @@ body {
   }
   100% {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
   }
 }
 
@@ -96,7 +96,7 @@ body {
   }
   100% {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
   }
 }
 
@@ -108,33 +108,28 @@ body {
   }
   100% {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
   }
 }
 
 .animate-entrance-header {
   animation: entrance-header 550ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  will-change: transform, opacity;
 }
 
 .animate-entrance-dashboard {
   animation: entrance-dashboard 750ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  will-change: transform, opacity;
 }
 
 .animate-entrance-sidebar {
   animation: entrance-sidebar 700ms cubic-bezier(0.16, 1, 0.3, 1) 100ms both;
-  will-change: transform, opacity;
 }
 
 .animate-entrance-feed {
   animation: entrance-feed 750ms cubic-bezier(0.16, 1, 0.3, 1) 200ms both;
-  will-change: transform, opacity;
 }
 
 .animate-entrance-card {
   animation: entrance-card 450ms cubic-bezier(0.16, 1, 0.3, 1) both;
-  will-change: transform, opacity;
 }
 
 /* Stagger delays for initial cards */
@@ -144,9 +139,11 @@ body {
 .stagger-4 { animation-delay: 420ms; }
 .stagger-5 { animation-delay: 480ms; }
 
-/* Sidebar channel bump micro-animation */
+/* ==========================================================================
+   Live Channels Sidebar — Bump & Lift Micro-Animations
+   ========================================================================== */
 .channel-btn {
-  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1),
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
               background-color 0.18s ease,
               border-color 0.18s ease,
               box-shadow 0.18s ease;
@@ -167,6 +164,17 @@ body {
   transform: translateX(2px) scale(0.99);
 }
 
+/* Active / Selected channel persistent bump highlight */
+.channel-btn[data-active="true"],
+.channel-btn.channel-active {
+  transform: translateX(4px);
+}
+
+.channel-btn[data-active="true"]:hover,
+.channel-btn.channel-active:hover {
+  transform: translateX(6px);
+}
+
 /* Subtle live beacon pulse */
 @keyframes beacon-glow {
   0%, 100% {
@@ -183,6 +191,99 @@ body {
 
 .live-beacon-pulse {
   animation: beacon-glow 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ==========================================================================
+   Left-Side Persistent Decorative Particles
+   ========================================================================== */
+.sidebar-particle {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(0.5px);
+  pointer-events: none;
+}
+
+@keyframes particle-drift-1 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translate(4px, -10px) scale(1.2);
+    opacity: 0.7;
+  }
+}
+
+@keyframes particle-drift-2 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translate(-5px, -8px) scale(0.9);
+    opacity: 0.65;
+  }
+}
+
+@keyframes particle-drift-3 {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translate(6px, 8px) scale(1.15);
+    opacity: 0.75;
+  }
+}
+
+.sidebar-particle-1 {
+  top: 10%;
+  left: 4%;
+  width: 5px;
+  height: 5px;
+  background: radial-gradient(circle, #38bdf8 0%, rgba(56, 189, 248, 0.1) 70%);
+  box-shadow: 0 0 8px 1px rgba(56, 189, 248, 0.5);
+  animation: particle-drift-1 6s ease-in-out infinite;
+}
+
+.sidebar-particle-2 {
+  top: 36%;
+  right: 6%;
+  width: 6px;
+  height: 6px;
+  background: radial-gradient(circle, #34d399 0%, rgba(52, 211, 153, 0.1) 70%);
+  box-shadow: 0 0 10px 1px rgba(52, 211, 153, 0.45);
+  animation: particle-drift-2 8s ease-in-out infinite 1s;
+}
+
+.sidebar-particle-3 {
+  top: 62%;
+  left: 8%;
+  width: 4px;
+  height: 4px;
+  background: radial-gradient(circle, #06b6d4 0%, rgba(6, 182, 212, 0.1) 70%);
+  box-shadow: 0 0 6px 1px rgba(6, 182, 212, 0.45);
+  animation: particle-drift-3 7s ease-in-out infinite 2s;
+}
+
+.sidebar-particle-4 {
+  bottom: 18%;
+  right: 8%;
+  width: 5px;
+  height: 5px;
+  background: radial-gradient(circle, #38bdf8 0%, rgba(56, 189, 248, 0.1) 70%);
+  box-shadow: 0 0 8px 1px rgba(56, 189, 248, 0.5);
+  animation: particle-drift-1 9s ease-in-out infinite 3s;
+}
+
+.sidebar-particle-5 {
+  bottom: 6%;
+  left: 12%;
+  width: 4px;
+  height: 4px;
+  background: radial-gradient(circle, #fbbf24 0%, rgba(251, 191, 36, 0.1) 70%);
+  box-shadow: 0 0 6px 1px rgba(251, 191, 36, 0.35);
+  animation: particle-drift-2 7.5s ease-in-out infinite 1.5s;
 }
 
 /* Card hover lift effect */
@@ -203,20 +304,23 @@ body {
   .animate-entrance-dashboard,
   .animate-entrance-sidebar,
   .animate-entrance-feed,
-  .animate-entrance-card,
+  .animate-entrance-card {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .sidebar-particle,
+  .live-beacon-pulse {
+    animation: none !important;
+  }
+
   .channel-btn,
   .channel-btn:hover,
   .channel-btn:focus-visible,
   .channel-btn:active,
   .ai-story-card,
   .ai-story-card:hover {
-    transform: none !important;
     transition: none !important;
-    animation: none !important;
-    opacity: 1 !important;
-  }
-
-  .live-beacon-pulse {
-    animation: none !important;
   }
 }

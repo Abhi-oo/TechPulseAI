@@ -119,7 +119,7 @@ export default function Home() {
         </div>
 
         {/* Content Columns */}
-        <div className="flex flex-col gap-6 md:flex-row">
+        <div className="flex flex-col gap-6 md:flex-row items-start">
           {/* Left Navigation Sidebar */}
           <Sidebar
             selectedCategory={selectedCategory}

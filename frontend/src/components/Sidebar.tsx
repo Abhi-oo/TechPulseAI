@@ -29,7 +29,19 @@ export default function Sidebar({
   stats,
 }: SidebarProps) {
   return (
-    <aside className="animate-entrance-sidebar w-full shrink-0 md:w-64 space-y-4">
+    <aside className="animate-entrance-sidebar relative w-full shrink-0 md:w-64 space-y-4 md:sticky md:top-20 z-10">
+      {/* Persistent Left-Side Floating Decorative Particles */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -inset-3 -z-10 overflow-hidden rounded-2xl"
+      >
+        <div className="sidebar-particle sidebar-particle-1" />
+        <div className="sidebar-particle sidebar-particle-2" />
+        <div className="sidebar-particle sidebar-particle-3" />
+        <div className="sidebar-particle sidebar-particle-4" />
+        <div className="sidebar-particle sidebar-particle-5" />
+      </div>
+
       {/* Category Navigation */}
       <div className="rounded-xl border border-slate-200/80 bg-white p-3.5 shadow-sm dark:border-slate-800/80 dark:bg-slate-900/60 dark:shadow-none backdrop-blur transition-colors duration-200">
         <div className="flex items-center justify-between px-2 pb-2.5">
@@ -54,14 +66,15 @@ export default function Sidebar({
               <button
                 key={cat.value}
                 onClick={() => onSelectCategory(cat.value)}
+                data-active={isSelected}
                 className={`channel-btn group flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium text-left ${
                   isSelected
-                    ? "bg-cyan-50 border border-cyan-400/50 text-cyan-800 shadow-sm dark:bg-cyan-950/40 dark:border-cyan-500/40 dark:text-cyan-300 font-semibold"
+                    ? "channel-active bg-cyan-50 border border-cyan-400/50 text-cyan-800 shadow-sm dark:bg-cyan-950/40 dark:border-cyan-500/40 dark:text-cyan-300 font-semibold"
                     : "text-slate-700 hover:bg-slate-100 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800/60 dark:hover:text-white border border-transparent"
                 }`}
               >
                 <div className="flex items-center gap-2.5 truncate">
-                  <span className="text-sm transition-transform duration-150 group-hover:scale-110">
+                  <span className="text-sm transition-transform duration-150 group-hover:scale-110 group-hover:translate-x-0.5">
                     {cat.icon}
                   </span>
                   <span className="truncate">{cat.label}</span>
@@ -92,9 +105,10 @@ export default function Sidebar({
         <div className="grid grid-cols-3 gap-1 md:grid-cols-1">
           <button
             onClick={() => onSortChange("rank")}
+            data-active={sortBy === "rank"}
             className={`channel-btn rounded-lg px-2.5 py-1.5 text-xs font-medium text-left ${
               sortBy === "rank"
-                ? "bg-slate-100 border border-slate-300 text-cyan-700 font-semibold dark:bg-slate-800 dark:border-slate-700 dark:text-cyan-300"
+                ? "channel-active bg-slate-100 border border-slate-300 text-cyan-700 font-semibold dark:bg-slate-800 dark:border-slate-700 dark:text-cyan-300"
                 : "text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-850 border border-transparent"
             }`}
           >
@@ -102,9 +116,10 @@ export default function Sidebar({
           </button>
           <button
             onClick={() => onSortChange("recent")}
+            data-active={sortBy === "recent"}
             className={`channel-btn rounded-lg px-2.5 py-1.5 text-xs font-medium text-left ${
               sortBy === "recent"
-                ? "bg-slate-100 border border-slate-300 text-cyan-700 font-semibold dark:bg-slate-800 dark:border-slate-700 dark:text-cyan-300"
+                ? "channel-active bg-slate-100 border border-slate-300 text-cyan-700 font-semibold dark:bg-slate-800 dark:border-slate-700 dark:text-cyan-300"
                 : "text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-850 border border-transparent"
             }`}
           >
@@ -112,9 +127,10 @@ export default function Sidebar({
           </button>
           <button
             onClick={() => onSortChange("confidence")}
+            data-active={sortBy === "confidence"}
             className={`channel-btn rounded-lg px-2.5 py-1.5 text-xs font-medium text-left ${
               sortBy === "confidence"
-                ? "bg-slate-100 border border-slate-300 text-cyan-700 font-semibold dark:bg-slate-800 dark:border-slate-700 dark:text-cyan-300"
+                ? "channel-active bg-slate-100 border border-slate-300 text-cyan-700 font-semibold dark:bg-slate-800 dark:border-slate-700 dark:text-cyan-300"
                 : "text-slate-600 hover:text-slate-900 hover:bg-slate-50 dark:text-slate-400 dark:hover:text-slate-200 dark:hover:bg-slate-850 border border-transparent"
             }`}
           >
